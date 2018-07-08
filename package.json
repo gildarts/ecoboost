@@ -5,8 +5,11 @@
   },
   "dependencies": {
     "@types/express": "^4.16.0",
+    "@types/webpack": "^4.4.5",
     "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^4.5.2",
     "express": "^4.16.3",
+    "rd": "^2.0.1",
     "rxjs": "^6.2.1",
     "ts-loader": "^4.4.2",
     "typescript": "^2.9.2",
