@@ -55,7 +55,7 @@
     "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
   },
   "include": [
-    "server.ts",
-    "./types.d.ts",
+    "src/main.ts",
+    "types.d.ts",
   ]
 }
