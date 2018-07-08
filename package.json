@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "express": "^4.16.3",
+    "rxjs": "^6.2.1"
+  }
+}

@@ -1,0 +1,40 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+npm-debug.log
+
+# System Files
+.DS_Store
+Thumbs.db
+
+/config/**/*.js
+/config/**/*.map
+/core/**/*.js
+/core/**/*.map
+/common/**/*.js
+/common/**/*.map
+/definitions/**/*.js
+/definitions/**/*.map
+/services/**/*.js
+/services/**/*.map
+/*.js
+/*.map
+/public/**
+/services/storage/uploads
+
+!ecosystem.config.js
+uploads
