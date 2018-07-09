@@ -1,6 +1,6 @@
 import { Foo } from './path_resolve';
 import * as rd from 'rd';
-import { rq } from './require';
+import { rq } from './noparse/require.ext';
 
 const CodeName = 'ecoboost';
 
