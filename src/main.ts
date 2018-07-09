@@ -1,6 +1,6 @@
 import { Foo } from './path_resolve';
 import * as rd from 'rd';
-import { rq } from './noparse/require.ext';
+import { prettyreq } from './noparse/require_redirect';
 
 const CodeName = 'ecoboost';
 
@@ -17,5 +17,5 @@ const services = rd.readFileFilterSync('./dynamic', /\.js/);
 // console.log(rq);
 
 services.forEach(function(item) {
-    rq(item)();
+    prettyreq(item)();
 });

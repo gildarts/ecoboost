@@ -1,10 +1,13 @@
 {
   "name": "ecoboost",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "EcoBoost Architecture",
   "main": "main.js",
-  "dependencies": {
+  "peerDependencies": {
     "express": "^4.16.3"
+  },
+  "dependencies": {
+    "rd": "^2.0.1"
   },
   "devDependencies": {
     "@types/express": "^4.16.0",
@@ -15,9 +18,7 @@
     "typescript": "^2.9.2",
     "webpack": "^4.15.1",
     "webpack-cli": "^3.0.8",
-    "webpack-dev-server": "^3.1.4",
-    "rd": "^2.0.1",
-    "rxjs": "^6.2.1"
+    "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
@@ -29,5 +30,8 @@
     "engine"
   ],
   "author": "Yaoming Huang",
-  "license": "ISC"
+  "license": "ISC",
+  "files": [
+    "dist"
+  ]
 }
