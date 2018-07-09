@@ -13,9 +13,9 @@ console.log(Foo);
 
 const services = rd.readFileFilterSync('./dynamic', /\.js/);
 
-console.log(services);
+// console.log(services);
 // console.log(rq);
 
 services.forEach(function(item) {
-    console.log(rq(item));
+    rq(item)();
 });
