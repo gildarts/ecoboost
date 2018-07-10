@@ -1,21 +1,35 @@
-import { Foo } from './path_resolve';
-import * as rd from 'rd';
+// import { Foo } from './path_resolve';
+// import * as rd from 'rd';
 import { prettyreq } from './noparse/require_redirect';
 
-const CodeName = 'ecoboost';
+// console.log(prettyreq('./ecoboost.config'));
 
-console.log(`hello zoe server => ${CodeName}`);
+// const services = rd.readFileFilterSync('./', /\.js$/);
 
-console.log(`dirname: ${__dirname}`);
-console.log(`filename: ${__filename}`);
+// console.log(services);
+// console.log('==========');
 
-console.log(Foo);
+// services.forEach(function(item) {
+//     console.log(`import ${item}`);
+//     console.log(prettyreq(item));
+// });
 
-const services = rd.readFileFilterSync('./', /hello\.bundle\.js$/);
 
-console.log(services);
-// console.log(rq);
+export const name = 'zoe';
 
-services.forEach(function(item) {
-    console.log(prettyreq(item));
-});
+export class ZoeServer {
+
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    name?: string;
+
+    age?: number;
+
+    public start(): void {
+        console.log(`start... ${this.name} ${this.age}`)
+    }
+}
+
+export * from './path_resolve';
