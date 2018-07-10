@@ -11,11 +11,11 @@ console.log(`filename: ${__filename}`);
 
 console.log(Foo);
 
-const services = rd.readFileFilterSync('./dynamic', /\.js/);
+const services = rd.readFileFilterSync('./', /hello\.bundle\.js$/);
 
-// console.log(services);
+console.log(services);
 // console.log(rq);
 
 services.forEach(function(item) {
-    prettyreq(item)();
+    console.log(prettyreq(item));
 });

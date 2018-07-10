@@ -58,6 +58,7 @@
   },
   "include": [
     "src/main.ts",
+    "services/hello.ts",
     "types.d.ts",
   ]
 }
