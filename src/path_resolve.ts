@@ -7,3 +7,5 @@ export const Foo = {
     path: path.resolve(__dirname),
     file: __filename
 };
+
+export const Power = 35;

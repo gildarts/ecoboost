@@ -1,6 +1,9 @@
 // import { Foo } from './path_resolve';
 // import * as rd from 'rd';
 import { prettyreq } from './noparse/require_redirect';
+import * as d from './dsa.decorator';
+
+console.log(d);
 
 // console.log(prettyreq('./ecoboost.config'));
 
@@ -33,3 +36,5 @@ export class ZoeServer {
 }
 
 export * from './path_resolve';
+
+export * from './dsa.decorator';

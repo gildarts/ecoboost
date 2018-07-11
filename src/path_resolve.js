@@ -14,4 +14,5 @@ exports.Foo = {
     path: path.resolve(__dirname),
     file: __filename
 };
+exports.Power = 35;
 //# sourceMappingURL=path_resolve.js.map

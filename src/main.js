@@ -2,7 +2,16 @@
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const d = __importStar(require("./dsa.decorator"));
+console.log(d);
 // console.log(prettyreq('./ecoboost.config'));
 // const services = rd.readFileFilterSync('./', /\.js$/);
 // console.log(services);
@@ -22,4 +31,5 @@ class ZoeServer {
 }
 exports.ZoeServer = ZoeServer;
 __export(require("./path_resolve"));
+__export(require("./dsa.decorator"));
 //# sourceMappingURL=main.js.map
