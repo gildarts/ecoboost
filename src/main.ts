@@ -1,7 +1,7 @@
 // import { Foo } from './path_resolve';
 // import * as rd from 'rd';
 import { prettyreq } from './noparse/require_redirect';
-import * as d from './dsa.decorator';
+import * as d from './reflection/decorators';
 
 console.log(d);
 
@@ -37,4 +37,4 @@ export class ZoeServer {
 
 export * from './path_resolve';
 
-export * from './dsa.decorator';
+export * from './reflection/decorators';
