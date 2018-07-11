@@ -3,7 +3,7 @@
   "version": "0.0.5",
   "description": "EcoBoost Architecture",
   "main": "./src/main.js",
-  "typings": "./index.d.ts",
+  "typings": "./index.ts",
   "peerDependencies": {
     "express": "^4.16.3"
   },
@@ -23,7 +23,7 @@
     "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js; cd dist; node ecoboost.js;cd ..",
+    "build": "webpack --config webpack.config.js",
     "start": "webpack-dev-server"
   },
   "keywords": [
