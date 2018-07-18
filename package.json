@@ -1,6 +1,6 @@
 {
-  "name": "ecoboost",
-  "version": "0.0.5",
+  "name": "@ecoboost/core",
+  "version": "0.0.6",
   "description": "EcoBoost Architecture",
   "main": "./src/main.js",
   "typings": "./index.ts",

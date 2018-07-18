@@ -1,13 +1,13 @@
 
 /**
- * 定義所有支援的 reflect。
+ * 代表服務。
  */
-export enum ReflectKey {
-    /**
-     * Service。
-     */
-    Service,
-};
+export const ServiceMetadataKey = Symbol('service');
+
+/**
+ * 代表 Contract。
+ */
+export const ContractMetadataKey = Symbol('contract');
 
 /**
  * Service 所支援的 http method。

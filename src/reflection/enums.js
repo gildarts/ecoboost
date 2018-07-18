@@ -1,16 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
- * 定義所有支援的 reflect。
+ * 代表服務。
  */
-var ReflectKey;
-(function (ReflectKey) {
-    /**
-     * Service。
-     */
-    ReflectKey[ReflectKey["Service"] = 0] = "Service";
-})(ReflectKey = exports.ReflectKey || (exports.ReflectKey = {}));
-;
+exports.ServiceMetadataKey = Symbol('service');
+/**
+ * 代表 Contract。
+ */
+exports.ContractMetadataKey = Symbol('contract');
 /**
  * Service 所支援的 http method。
  */
