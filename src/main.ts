@@ -5,3 +5,4 @@ export type Response = express.Response;
 export type NextFunc = express.NextFunction;
 
 export * from './core';
+export * from './reflection';

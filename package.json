@@ -4,14 +4,18 @@
   "description": "EcoBoost Architecture",
   "main": "./src/main.js",
   "typings": "./index.ts",
-  "peerDependencies": {
-    "express": "^4.16.3"
-  },
+  "peerDependencies": {},
   "dependencies": {
+    "@types/fs-extra": "^5.0.4",
+    "fs-extra": "^7.0.0",
+    "koa": "^2.5.2",
+    "koa-router": "^7.4.0",
     "rd": "^2.0.1"
   },
   "devDependencies": {
     "@types/express": "^4.16.0",
+    "@types/koa": "^2.0.46",
+    "@types/koa-router": "^7.0.30",
     "@types/webpack": "^4.4.5",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.2",

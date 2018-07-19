@@ -4,6 +4,8 @@ import { RequestHandler } from 'express';
 
 // 路由 http://expressjs.com/zh-tw/guide/routing.html
 
+export default 33;
+
 /**
  * 標示指定的 Class 為一個 Contract。
  * @param config 相關設定。
