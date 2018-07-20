@@ -84,7 +84,7 @@ function scanPackageClasses(programs: JavascriptProgram[]): PackageClass[] {
  * 從指定的目錄載入 package class。
  * @dirPath 路徑。
  */
-export async function loadPackageClassesFrom(dirPath: string): Promise<PackageClass[]> {
+export async function loadPackageFromFolder(dirPath: string): Promise<PackageClass[]> {
 
     const jsFiles: string[] = [];
 

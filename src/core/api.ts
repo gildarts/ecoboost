@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 
-import { loadPackageClassesFrom, normalizeRouteName } from './utils';
+import { loadPackageFromFolder, normalizeRouteName } from './utils';
 
 export class API {
 
@@ -27,7 +27,7 @@ export class API {
         const api = new API();
         const apiRouter = api.router;
 
-        for(const pkg of await loadPackageClassesFrom(dirPath)) {
+        for(const pkg of await loadPackageFromFolder(dirPath)) {
             const pkgRouter = new Router();
 
             for(const srv of pkg.scanServiceFunction()) {
