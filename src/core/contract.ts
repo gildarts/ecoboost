@@ -33,7 +33,8 @@ export class Contract {
 
             const pkgs = [];
             for(const cls of pkgClasses) {
-                pkgs.push(cls.pkgConfig);               
+                pkgs.push(cls.pkgConfig);
+                cls.createServiceRoutes();
             }
 
             response.body = pkgs;
