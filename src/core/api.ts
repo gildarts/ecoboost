@@ -3,7 +3,7 @@ import Router from 'koa-router';
 
 import { loadPackageClassesFrom, normalizeRouteName } from './utils';
 
-export class Contract {
+export class API {
 
     private router: Router;
 
@@ -22,10 +22,10 @@ export class Contract {
      * 從指定路徑載入 Contract 所有 Package、Service。
      * @param dirPath 路徑。
      */
-    public static async load(dirPath: string): Promise<Contract> {
+    public static async load(dirPath: string): Promise<API> {
 
-        const contract = new Contract();
-        const ctcRouter = contract.router;
+        const api = new API();
+        const apiRouter = api.router;
 
         for(const pkg of await loadPackageClassesFrom(dirPath)) {
             const pkgRouter = new Router();
@@ -41,13 +41,13 @@ export class Contract {
             }
 
             if (pkg.pkgConfig.withoutRoute && pkg.pkgConfig.withoutRoute) {
-                ctcRouter.use(pkgRouter.routes());
+                apiRouter.use(pkgRouter.routes());
             } else {
                 const path = normalizeRouteName(pkg.pkgConfig.path ? pkg.pkgConfig.path : pkg.name);
-                ctcRouter.use(path, pkgRouter.routes());
+                apiRouter.use(path, pkgRouter.routes());
             }
         }
 
-        return contract;
+        return api;
     }
 }
