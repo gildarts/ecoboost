@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { ContractMetadataKey, ServiceMetadataKey, ServiceMethod } from './enums';
+import { PackageMetadataKey, ServiceMetadataKey, ServiceMethod } from './enums';
 import { RequestHandler } from 'express';
 
 // 路由 http://expressjs.com/zh-tw/guide/routing.html
@@ -9,7 +9,7 @@ import { RequestHandler } from 'express';
  * @param config 相關設定。
  */
 export function Package(config: PackageConfig = {}) {
-    return Reflect.metadata(ContractMetadataKey, config);
+    return Reflect.metadata(PackageMetadataKey, config);
 }
 
 /**

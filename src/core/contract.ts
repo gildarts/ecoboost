@@ -7,7 +7,7 @@ export class Contract {
 
     private router: Router;
 
-    constructor() {
+    private constructor() {
         this.router = new Router();
     }
 
@@ -18,28 +18,63 @@ export class Contract {
         return this.router.routes();
     }
 
+    /**
+     * 從指定路徑載入 Contract 所有 Package、Service。
+     * @param dirPath 路徑。
+     */
     public static async load(dirPath: string): Promise<Contract> {
 
         const contract = new Contract();
-        const pkgRouter = contract.router;
+        const ctcRouter = contract.router;
+        const pkgClasses = await loadPackageClassesFrom(dirPath);
 
-        const pkgChild = new Router();
-        pkgChild.get(`/:id/:age`, async (ctx, next) => {
-            const { request, response } = ctx;
-            console.log('/:id/:age');
+        ctcRouter.get('/', async (ctx) => {
+            const { response } = ctx;
 
-            const pkgClasses = await loadPackageClassesFrom(dirPath);
+            const pkgs = [];
+            for(const cls of pkgClasses) {
+                pkgs.push(cls.pkgConfig);               
+            }
 
-            response.body = ctx.params;
+            response.body = pkgs;
         });
+        
+        // const pkgChild = new Router();
 
-        pkgRouter.use('/:name', async (ctx, next) => {
-            console.log(ctx.params);
-            await next();
-            console.log(ctx.path);
-        }, pkgChild.routes());
+        // const tr = new TestRoute(dirPath);
+
+        // pkgChild.get('/:id/:age', tr.getZoe.bind(tr));
+
+        // pkgChild.get(`/:id/:age`, async (ctx, next) => {
+        //     const { request, response } = ctx;
+        //     console.log('/:id/:age');
+
+        //     const pkgClasses = await loadPackageClassesFrom(dirPath);
+
+        //     response.body = ctx.params;
+        // });
+
+        // pkgRouter.use('/:name', async (ctx, next) => {
+        //     console.log(ctx.params);
+        //     await next();
+        //     console.log(ctx.path);
+        // }, pkgChild.routes());
 
         return contract;
     }
 }
 
+class TestRoute {
+
+    constructor(private dirPath: string) {
+    }
+
+    public async getZoe(ctx: Router.IRouterContext) {
+        const { request, response } = ctx;
+        console.log('/:id/:age');
+
+        const pkgClasses = await loadPackageClassesFrom(this.dirPath);
+
+        response.body = ctx.params;
+    }
+}

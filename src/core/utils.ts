@@ -1,6 +1,6 @@
 import fse from 'fs-extra';
 import path from 'path';
-import { ContractMetadataKey } from '../reflection/enums';
+import { PackageMetadataKey } from '../reflection/enums';
 import { loadjs } from '../noparse/require_redirect';
 import { PackageClass } from './package_class';
 
@@ -62,7 +62,7 @@ function scanPackageClasses(jsCodes: any[]): PackageClass[] {
 
             // 只有物件(類別)會被處理。
             if (Object.isExtensible(pkgClass)) {
-                const metadata = Reflect.getMetadata(ContractMetadataKey, pkgClass);
+                const metadata = Reflect.getMetadata(PackageMetadataKey, pkgClass);
 
                 if (metadata) pkgClasses.push(new PackageClass(pkgClass, metadata));
 

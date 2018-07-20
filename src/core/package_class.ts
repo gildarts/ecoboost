@@ -1,7 +1,7 @@
 import { PackageConfig } from "../reflection/decorators";
 
 /**
- * 代表 package 類別，可以輸出 service route。
+ * 代表 package 類別，可用於輸出 service route。
  */
 export class PackageClass {
 
@@ -17,4 +17,11 @@ export class PackageClass {
 
     }
 
+    public getServiceFunction() {
+
+    }
+}
+
+export class ServiceFunction {
+    
 }
