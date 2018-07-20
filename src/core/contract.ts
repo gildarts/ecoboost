@@ -26,9 +26,8 @@ export class Contract {
 
         const contract = new Contract();
         const ctcRouter = contract.router;
-        const pkgClasses = await loadPackageClassesFrom(dirPath);
 
-        for(const pkg of pkgClasses) {
+        for(const pkg of await loadPackageClassesFrom(dirPath)) {
             const pkgRouter = new Router();
 
             for(const srv of pkg.scanServiceFunction()) {
