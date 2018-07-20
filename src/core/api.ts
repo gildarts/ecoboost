@@ -2,6 +2,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 
 import { loadPackageFromFolder, normalizeRouteName } from './utils';
+import { ServiceMethod } from '../reflection/enums';
 
 export class API {
 
@@ -31,13 +32,22 @@ export class API {
             const pkgRouter = new Router();
 
             for(const srv of pkg.scanServiceFunction()) {
+                const { srvConfig, srvFunction } = srv;
 
-                if(srv.srvConfig.withoutRoute && srv.srvConfig.withoutRoute) {
-                    pkgRouter.get('/', srv.srvFunction);
-                } else {
-                    const path = normalizeRouteName(srv.srvConfig.path ? srv.srvConfig.path : srv.name);
-                    pkgRouter.get(path, srv.srvFunction);
+                let path = normalizeRouteName(srvConfig.path ? srvConfig.path : srv.name);
+
+                if (srvConfig.withoutRoute && srvConfig.withoutRoute) {
+                    path = '/';
                 }
+
+                if(srvConfig.method === ServiceMethod.Get) pkgRouter.get(path, srvFunction);
+                if(srvConfig.method === ServiceMethod.Post) pkgRouter.post(path, srvFunction);
+                if(srvConfig.method === ServiceMethod.Put) pkgRouter.put(path, srvFunction);
+                if(srvConfig.method === ServiceMethod.Delete) pkgRouter.delete(path, srvFunction);
+                if(srvConfig.method === ServiceMethod.Head) pkgRouter.head(path, srvFunction);
+                if(srvConfig.method === ServiceMethod.Options) pkgRouter.options(path, srvFunction);
+                if(srvConfig.method === ServiceMethod.Patch) pkgRouter.patch(path, srvFunction);
+                if(srvConfig.method === ServiceMethod.All) pkgRouter.all(path, srvFunction);
             }
 
             if (pkg.pkgConfig.withoutRoute && pkg.pkgConfig.withoutRoute) {

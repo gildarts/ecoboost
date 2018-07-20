@@ -17,5 +17,8 @@ export enum ServiceMethod {
     Get = 'get',
     Post = 'post',
     Put = 'put',
-    Delete = 'delete'
+    Delete = 'delete',
+    Head = 'head',
+    Patch = 'patch',
+    Options = 'options'
 }
