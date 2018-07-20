@@ -61,14 +61,17 @@ function scanPackageClasses(programs: JavascriptProgram[]): PackageClass[] {
         for (const item of Object.getOwnPropertyNames(code)) {
             const pkgClass = code[item];
 
-            if(item === 'default') console.log(`Package Class 不允許使用「export default」，這將用於特殊用途(${program.fullPath})。`);
-            
             // 只有物件(類別)會被處理。
             if (Object.isExtensible(pkgClass)) {
-
+                
                 const metadata = Reflect.getMetadata(PackageMetadataKey, pkgClass);
                 
-                if (metadata) pkgClasses.push(new PackageClass(item, pkgClass, metadata));
+                if (metadata) {
+                    if (item === 'default') // 判斷式在這是因為要確定有標示為 Package 時才檢查。
+                        console.warn(`Package Class 不允許使用「export default」，這將用於特殊用途(${program.fullPath})。`);
+
+                    pkgClasses.push(new PackageClass(item, pkgClass, metadata));
+                }
 
             }
         }
