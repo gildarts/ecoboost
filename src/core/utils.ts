@@ -3,7 +3,7 @@ import path from 'path';
 import { PackageMetadataKey } from '../reflection/enums';
 import { loadjs } from '../noparse/require_redirect';
 import { PackageClass } from './package_class';
-
+import { JavascriptProgram } from './javascript_program'
 /**
  * 掃描出所有 javascript 檔案。
  * @param dirPath 路徑。
@@ -35,35 +35,39 @@ async function enumerateJavascriptFiles(dirPath: string, outFiles: string[]) {
  * 從 javascript 原始碼載入程式。
  * @param jsFiles javascript 檔案清單。
  */
-function loadJavascriptCodes(jsFiles: string[]): any[] {
+function loadJavascriptCodes(jsFiles: string[]): JavascriptProgram[] {
 
     const javascriptList: any[] = [];
 
     for (const js of jsFiles) {
-        javascriptList.push(loadjs(js));
+        javascriptList.push(new JavascriptProgram(js, loadjs(js)));
     }
 
     return javascriptList;
 }
 
-
 /**
  * 掃描所有程式，並找出有標示為 Package 的類別。
- * @param jsCodes javascript 程式。
+ * @param programs javascript 程式。
  */
-function scanPackageClasses(jsCodes: any[]): PackageClass[] {
+function scanPackageClasses(programs: JavascriptProgram[]): PackageClass[] {
 
     const pkgClasses: PackageClass[] = [];
 
-    for (const code of jsCodes) {
+    for (const program of programs) {
+
+        const code = program.code;
 
         for (const item of Object.getOwnPropertyNames(code)) {
             const pkgClass = code[item];
 
+            if(item === 'default') console.log(`Package Class 不允許使用「export default」，這將用於特殊用途(${program.fullPath})。`);
+            
             // 只有物件(類別)會被處理。
             if (Object.isExtensible(pkgClass)) {
-                const metadata = Reflect.getMetadata(PackageMetadataKey, pkgClass);
 
+                const metadata = Reflect.getMetadata(PackageMetadataKey, pkgClass);
+                
                 if (metadata) pkgClasses.push(new PackageClass(item, pkgClass, metadata));
 
             }
