@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 
-import { loadPackageClassesFrom } from './utils';
+import { loadPackageClassesFrom, normalizeRouteName } from './utils';
 
 export class Contract {
 
@@ -28,54 +28,27 @@ export class Contract {
         const ctcRouter = contract.router;
         const pkgClasses = await loadPackageClassesFrom(dirPath);
 
-        ctcRouter.get('/', async (ctx) => {
-            const { response } = ctx;
+        for(const pkg of pkgClasses) {
+            const pkgRouter = new Router();
 
-            const pkgs = [];
-            for(const cls of pkgClasses) {
-                pkgs.push(cls.pkgConfig);
-                cls.createServiceRoutes();
+            for(const srv of pkg.scanServiceFunction()) {
+
+                if(srv.srvConfig.withoutRoute && srv.srvConfig.withoutRoute) {
+                    pkgRouter.get('/', srv.srvFunction);
+                } else {
+                    const path = normalizeRouteName(srv.srvConfig.path ? srv.srvConfig.path : srv.name);
+                    pkgRouter.get(path, srv.srvFunction);
+                }
             }
 
-            response.body = pkgs;
-        });
-        
-        // const pkgChild = new Router();
-
-        // const tr = new TestRoute(dirPath);
-
-        // pkgChild.get('/:id/:age', tr.getZoe.bind(tr));
-
-        // pkgChild.get(`/:id/:age`, async (ctx, next) => {
-        //     const { request, response } = ctx;
-        //     console.log('/:id/:age');
-
-        //     const pkgClasses = await loadPackageClassesFrom(dirPath);
-
-        //     response.body = ctx.params;
-        // });
-
-        // pkgRouter.use('/:name', async (ctx, next) => {
-        //     console.log(ctx.params);
-        //     await next();
-        //     console.log(ctx.path);
-        // }, pkgChild.routes());
+            if (pkg.pkgConfig.withoutRoute && pkg.pkgConfig.withoutRoute) {
+                ctcRouter.use(pkgRouter.routes());
+            } else {
+                const path = normalizeRouteName(pkg.pkgConfig.path ? pkg.pkgConfig.path : pkg.name);
+                ctcRouter.use(path, pkgRouter.routes());
+            }
+        }
 
         return contract;
-    }
-}
-
-class TestRoute {
-
-    constructor(private dirPath: string) {
-    }
-
-    public async getZoe(ctx: Router.IRouterContext) {
-        const { request, response } = ctx;
-        console.log('/:id/:age');
-
-        const pkgClasses = await loadPackageClassesFrom(this.dirPath);
-
-        response.body = ctx.params;
     }
 }

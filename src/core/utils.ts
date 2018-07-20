@@ -64,7 +64,7 @@ function scanPackageClasses(jsCodes: any[]): PackageClass[] {
             if (Object.isExtensible(pkgClass)) {
                 const metadata = Reflect.getMetadata(PackageMetadataKey, pkgClass);
 
-                if (metadata) pkgClasses.push(new PackageClass(pkgClass, metadata));
+                if (metadata) pkgClasses.push(new PackageClass(item, pkgClass, metadata));
 
             }
         }
@@ -89,4 +89,17 @@ export async function loadPackageClassesFrom(dirPath: string): Promise<PackageCl
     
     // 掃描含有 package 的類別。
     return scanPackageClasses(jsCodes);
+}
+
+/**
+ * 將路徑規範化。
+ * @param path 路徑。
+ */
+export function normalizeRouteName(path?: string) {
+    if(!path) return '/'; // 如果沒有指定就回傳「/」。
+
+    const p = path.toLowerCase();
+
+    if(p.startsWith('/')) return p; // 如果已經符合規定就回傳。
+    return `/${p}`; // 加上「/」。
 }

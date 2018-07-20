@@ -1,4 +1,5 @@
-import { PackageConfig, ServiceConfig } from "../reflection/decorators";
+import { PackageConfig, Service } from "../reflection/decorators";
+import { ServiceFunction } from './service_function';
 import { ServiceMetadataKey } from "../reflection/enums";
 
 /**
@@ -7,6 +8,10 @@ import { ServiceMetadataKey } from "../reflection/enums";
 export class PackageClass {
 
     constructor(
+        /**
+         * package 名稱。
+         */
+        public name: string,
         /**
          * package class。
          */
@@ -20,36 +25,18 @@ export class PackageClass {
     /**
      * 掃描所有可當 service 的 function 資訊。
      */
-    public createServiceRoutes(): ServiceFunction[] {
+    public scanServiceFunction(): ServiceFunction[] {
 
         const pkgObj = new this.pkgClass();
-        // const descriptorMap: PropertyDescriptorMap = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(pkgObj))
+        const srvFuncs = [];
 
-        // for(const key of Object.getOwnPropertyNames(descriptorMap)) {
         for(const key of Object.keys(Object.getPrototypeOf(pkgObj))) {
-            // const descriptor = descriptorMap[key];
-
-            // if(!descriptor.enumerable) continue; // 不能列舉的 function 就跳過。
 
             const metadata = Reflect.getMetadata(ServiceMetadataKey, pkgObj, key);
 
-            console.log(metadata);
-
+            srvFuncs.push(new ServiceFunction(key, pkgObj[key].bind(pkgObj), metadata));
         }
 
-        return [];
+        return srvFuncs;
     }
-}
-
-export class ServiceFunction {
-    constructor(
-        /**
-         * service function。
-         */
-        public srvFunction: any,
-        /**
-         * service config。
-         */
-        public srvConfig: ServiceConfig
-    ) { }
 }
