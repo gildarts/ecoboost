@@ -1,7 +1,9 @@
 import 'reflect-metadata';
 import { PackageMetadataKey, ServiceMetadataKey, ServiceMethod } from './enums';
+import Koa from 'koa';
+import Router from 'koa-router';
 
-// 路由 http://expressjs.com/zh-tw/guide/routing.html
+export type IMiddleware = Router.IMiddleware;
 
 /**
  * 標示指定的 Class 為一個 Contract。
@@ -32,6 +34,11 @@ export interface PackageConfig {
      * 略過 path 設定，不會產生新的路徑層次。。
      */
     withoutPath?: boolean;
+
+    /**
+     * 中介軟體。
+     */
+    middleware?: IMiddleware | IMiddleware[];
 }
 
 export interface ServiceConfig {
@@ -47,6 +54,11 @@ export interface ServiceConfig {
      * 略過 path 設定，不會產生新的路徑層次。(預設為 false)。
      */
     withoutPath?: boolean;
+
+    /**
+     * 中介軟體。
+     */
+    middleware?: IMiddleware | IMiddleware[];
 }
 
 export class ServiceConfigImpl implements ServiceConfig {
@@ -54,13 +66,17 @@ export class ServiceConfigImpl implements ServiceConfig {
 
     method = ServiceMethod.All;
 
-    public registerRoute(callback: (httpMethod: ServiceMethod) => void) {
+    middleware: IMiddleware | IMiddleware[] = [];
+
+    public registerRoute(callback: (httpMethod: ServiceMethod, middlewares: IMiddleware[]) => void) {
         const method = this.method ? this.method : ServiceMethod.All;
+        const middleware = this.middleware ? this.middleware: [];
 
         const methods = new Array<ServiceMethod>().concat(method) || [];
+        const middlewares = new Array<IMiddleware>().concat(middleware) || [];
 
         for(const m of methods) {
-            callback(m);
+            callback(m, middlewares);
         }
 
     }

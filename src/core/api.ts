@@ -2,8 +2,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 
 import { loadPackageFromFolder, normalizeRouteName } from './utils';
-import { ServiceMethod } from '../reflection/enums';
-import { ServiceConfigImpl } from '../reflection/decorators';
+import { ServiceConfigImpl, IMiddleware } from '../reflection/decorators';
 
 export class API {
 
@@ -30,6 +29,7 @@ export class API {
         const apiRouter = api.router;
 
         for(const pkg of await loadPackageFromFolder(dirPath)) {
+            const { pkgConfig } = pkg;
             const pkgRouter = new Router();
 
             for(const srv of pkg.scanServiceFunction()) {
@@ -41,16 +41,19 @@ export class API {
                     path = '/';
                 }
 
-                (srvConfig as ServiceConfigImpl).registerRoute((srvMeth) => {
-                    pkgRouter[srvMeth](path, srvFunction);
+                (srvConfig as ServiceConfigImpl).registerRoute((srvMeth, middlewares) => {
+                    pkgRouter[srvMeth](path, ...[...middlewares, srvFunction]);
                 });
             }
 
-            if (pkg.pkgConfig.withoutPath && pkg.pkgConfig.withoutPath) {
-                apiRouter.use(pkgRouter.routes());
+            const middleware = pkgConfig.middleware ? pkgConfig.middleware: [];
+            const middlewares = new Array<IMiddleware>().concat(middleware) || [];
+
+            if (pkgConfig.withoutPath && pkgConfig.withoutPath) {
+                apiRouter.use(...[...middlewares, pkgRouter.routes()]);
             } else {
-                const path = normalizeRouteName(pkg.pkgConfig.path ? pkg.pkgConfig.path : pkg.name);
-                apiRouter.use(path, pkgRouter.routes());
+                const path = normalizeRouteName(pkgConfig.path ? pkgConfig.path : pkg.name);
+                apiRouter.use(path, ...[...middlewares, pkgRouter.routes()]);
             }
         }
 
