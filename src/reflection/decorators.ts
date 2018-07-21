@@ -15,8 +15,11 @@ export function Package(config: PackageConfig = {}) {
  * 標示指定的 static function 為一個 Service。
  * @param config 相關設定。
  */
-export function Service(config: ServiceConfig = { method: ServiceMethod.All }) {
-    return Reflect.metadata(ServiceMetadataKey, config);
+export function Service(config: ServiceConfig = {}) {
+
+    const confImpl = Object.setPrototypeOf(config, new ServiceConfigImpl());
+
+    return Reflect.metadata(ServiceMetadataKey, confImpl);
 }
 
 export interface PackageConfig {
@@ -26,14 +29,14 @@ export interface PackageConfig {
     path?: string;
 
     /**
-     * 略過 route 設定。
+     * 略過 path 設定，不會產生新的路徑層次。。
      */
-    withoutRoute?: boolean;
+    withoutPath?: boolean;
 }
 
 export interface ServiceConfig {
     /** http method，預設為 all => get, post, put, delete。 */
-    method?: ServiceMethod;
+    method?: ServiceMethod | ServiceMethod[];
 
     /** 
      * 呼叫路徑，如未指定會使用 function 名稱當路徑(一律小寫)。 
@@ -41,7 +44,24 @@ export interface ServiceConfig {
     path?: string;
 
     /**
-     * 略過 route 設定(預設為 false)。
+     * 略過 path 設定，不會產生新的路徑層次。(預設為 false)。
      */
-    withoutRoute?: boolean;
+    withoutPath?: boolean;
+}
+
+export class ServiceConfigImpl implements ServiceConfig {
+    constructor() {}
+
+    method = ServiceMethod.All;
+
+    public registerRoute(callback: (httpMethod: ServiceMethod) => void) {
+        const method = this.method ? this.method : ServiceMethod.All;
+
+        const methods = new Array<ServiceMethod>().concat(method) || [];
+
+        for(const m of methods) {
+            callback(m);
+        }
+
+    }
 }

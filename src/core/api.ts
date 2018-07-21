@@ -3,6 +3,7 @@ import Router from 'koa-router';
 
 import { loadPackageFromFolder, normalizeRouteName } from './utils';
 import { ServiceMethod } from '../reflection/enums';
+import { ServiceConfigImpl } from '../reflection/decorators';
 
 export class API {
 
@@ -36,21 +37,16 @@ export class API {
 
                 let path = normalizeRouteName(srvConfig.path ? srvConfig.path : srv.name);
 
-                if (srvConfig.withoutRoute && srvConfig.withoutRoute) {
+                if (srvConfig.withoutPath && srvConfig.withoutPath) {
                     path = '/';
                 }
 
-                if(srvConfig.method === ServiceMethod.Get) pkgRouter.get(path, srvFunction);
-                if(srvConfig.method === ServiceMethod.Post) pkgRouter.post(path, srvFunction);
-                if(srvConfig.method === ServiceMethod.Put) pkgRouter.put(path, srvFunction);
-                if(srvConfig.method === ServiceMethod.Delete) pkgRouter.delete(path, srvFunction);
-                if(srvConfig.method === ServiceMethod.Head) pkgRouter.head(path, srvFunction);
-                if(srvConfig.method === ServiceMethod.Options) pkgRouter.options(path, srvFunction);
-                if(srvConfig.method === ServiceMethod.Patch) pkgRouter.patch(path, srvFunction);
-                if(srvConfig.method === ServiceMethod.All) pkgRouter.all(path, srvFunction);
+                (srvConfig as ServiceConfigImpl).registerRoute((srvMeth) => {
+                    pkgRouter[srvMeth](path, srvFunction);
+                });
             }
 
-            if (pkg.pkgConfig.withoutRoute && pkg.pkgConfig.withoutRoute) {
+            if (pkg.pkgConfig.withoutPath && pkg.pkgConfig.withoutPath) {
                 apiRouter.use(pkgRouter.routes());
             } else {
                 const path = normalizeRouteName(pkg.pkgConfig.path ? pkg.pkgConfig.path : pkg.name);
