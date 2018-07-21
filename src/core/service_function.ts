@@ -1,4 +1,4 @@
-import { ServiceConfig } from '../reflection/decorators';
+import { ServiceConfig } from '../reflection';
 
 export class ServiceFunction {
     constructor(

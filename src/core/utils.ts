@@ -1,9 +1,10 @@
 import fse from 'fs-extra';
 import path from 'path';
-import { PackageMetadataKey } from '../reflection/enums';
+import { PackageMetadataKey } from '../reflection';
 import { loadjs } from '../noparse/require_redirect';
 import { PackageClass } from './package_class';
 import { JavascriptProgram } from './javascript_program'
+
 /**
  * 掃描出所有 javascript 檔案。
  * @param dirPath 路徑。

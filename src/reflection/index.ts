@@ -1,3 +1,5 @@
 
 export * from './decorators';
-export { ServiceMethod } from './consts';
+export * from './consts';
+export * from './service_config';
+export * from './package_config'

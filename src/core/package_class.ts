@@ -1,6 +1,6 @@
-import { PackageConfig, Service } from "../reflection/decorators";
+import { PackageConfig, Service } from "../reflection";
 import { ServiceFunction } from './service_function';
-import { ServiceMetadataKey } from "../reflection/enums";
+import { ServiceMetadataKey } from "../reflection";
 
 /**
  * 代表 package 類別，可用於輸出 service route。
