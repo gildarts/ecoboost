@@ -1,3 +1,3 @@
 
 export * from './decorators';
-export { ServiceMethod } from './enums';
+export { ServiceMethod } from './consts';

@@ -1,3 +1,8 @@
+import Router from 'koa-router';
+
+export type IMiddleware = Router.IMiddleware;
+
+export type IServiceMiddleware = ((ctx: Router.IRouterContext, next: () => Promise<any>, pkgClass: any) => any);
 
 /**
  * 代表服務。
