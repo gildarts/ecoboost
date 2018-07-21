@@ -2,7 +2,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 
 import { loadPackageFromFolder, normalizeRouteName } from './utils';
-import { ServiceConfigImpl, IMiddleware } from '../reflection/decorators';
+import { ServiceConfigImpl, IMiddleware, IServiceMiddleware } from '../reflection/decorators';
 
 export class API {
 
@@ -42,7 +42,10 @@ export class API {
                 }
 
                 (srvConfig as ServiceConfigImpl).registerRoute((srvMeth, middlewares) => {
-                    pkgRouter[srvMeth](path, ...[...middlewares, srvFunction]);
+                    
+                    const mids = middlewares.map((mid) => this.wrapServiceMiddleware(mid, srv.pkgInstance))
+
+                    pkgRouter[srvMeth](path, ...[...mids, srvFunction]);
                 });
             }
 
@@ -58,5 +61,11 @@ export class API {
         }
 
         return api;
+    }
+
+    private static wrapServiceMiddleware(mid: IServiceMiddleware, pkgClass: any) {
+        return (ctx: Router.IRouterContext, next: () => Promise<any>) => {
+            return mid(ctx, next, pkgClass);
+        }
     }
 }

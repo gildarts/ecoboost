@@ -4,6 +4,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 
 export type IMiddleware = Router.IMiddleware;
+export type IServiceMiddleware = ((ctx: Router.IRouterContext, next: () => Promise<any>, pkgClass: any) => any);
 
 /**
  * 標示指定的 Class 為一個 Contract。
@@ -58,7 +59,7 @@ export interface ServiceConfig {
     /**
      * 中介軟體。
      */
-    middleware?: IMiddleware | IMiddleware[];
+    middleware?: IServiceMiddleware | IServiceMiddleware[];
 }
 
 export class ServiceConfigImpl implements ServiceConfig {
@@ -66,14 +67,14 @@ export class ServiceConfigImpl implements ServiceConfig {
 
     method = ServiceMethod.All;
 
-    middleware: IMiddleware | IMiddleware[] = [];
+    middleware: IServiceMiddleware | IServiceMiddleware[] = [];
 
-    public registerRoute(callback: (httpMethod: ServiceMethod, middlewares: IMiddleware[]) => void) {
+    public registerRoute(callback: (httpMethod: ServiceMethod, middlewares: IServiceMiddleware[]) => void) {
         const method = this.method ? this.method : ServiceMethod.All;
         const middleware = this.middleware ? this.middleware: [];
 
         const methods = new Array<ServiceMethod>().concat(method) || [];
-        const middlewares = new Array<IMiddleware>().concat(middleware) || [];
+        const middlewares = new Array<IServiceMiddleware>().concat(middleware) || [];
 
         for(const m of methods) {
             callback(m, middlewares);

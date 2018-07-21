@@ -7,6 +7,10 @@ export class ServiceFunction {
          */
         public name: string,
         /**
+         * instance of package class。
+         */
+        public pkgInstance: any,
+        /**
          * service function。
          */
         public srvFunction: any,
