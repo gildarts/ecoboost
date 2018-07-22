@@ -3,7 +3,7 @@ import path from 'path';
 import { PackageMetadataKey } from '../reflection';
 import { loadjs } from '../noparse/require_redirect';
 import { PackageClass } from './package_class';
-import { JavascriptProgram } from './javascript_program'
+import { JavascriptModule } from './javascript_module'
 
 /**
  * 掃描出所有 javascript 檔案。
@@ -36,12 +36,12 @@ async function enumerateJavascriptFiles(dirPath: string, outFiles: string[]) {
  * 從 javascript 原始碼載入程式。
  * @param jsFiles javascript 檔案清單。
  */
-function loadJavascriptCodes(jsFiles: string[]): JavascriptProgram[] {
+function loadJavascriptCodes(jsFiles: string[]): JavascriptModule[] {
 
     const javascriptList: any[] = [];
 
     for (const js of jsFiles) {
-        javascriptList.push(new JavascriptProgram(js, loadjs(js)));
+        javascriptList.push(new JavascriptModule(js, loadjs(js)));
     }
 
     return javascriptList;
@@ -51,7 +51,7 @@ function loadJavascriptCodes(jsFiles: string[]): JavascriptProgram[] {
  * 掃描所有程式，並找出有標示為 Package 的類別。
  * @param programs javascript 程式。
  */
-function scanPackageClasses(programs: JavascriptProgram[]): PackageClass[] {
+function scanPackageClasses(programs: JavascriptModule[]): PackageClass[] {
 
     const pkgClasses: PackageClass[] = [];
 

@@ -2,7 +2,7 @@
 /**
  * 代表 Javascript 可執行程式。
  */
-export class JavascriptProgram {
+export class JavascriptModule {
 
     constructor(
         /**
