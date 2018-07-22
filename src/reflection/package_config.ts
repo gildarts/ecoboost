@@ -1,4 +1,5 @@
 import { IPackageMiddleware } from "./consts";
+import { StaticProvider } from '../di/provider';
 
 export interface PackageConfig {
     /** 
@@ -16,4 +17,9 @@ export interface PackageConfig {
      * 中介軟體。
      */
     middleware?: IPackageMiddleware | IPackageMiddleware[];
+
+    /**
+     * package 層級的 provider。
+     */
+    providers?: StaticProvider[]
 }

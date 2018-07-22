@@ -2,7 +2,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 
 import { loadPackageFromFolder, normalizeRouteName } from './utils';
-import { IServiceMiddleware, IServiceContext } from '../reflection';
+import { IServiceMiddleware, IServiceContext, IPackageMiddleware } from '../reflection';
 import { ServiceConfigImpl } from '../reflection/service_config_impl';
 import { StaticProvider, Injector } from '../di';
 
@@ -32,11 +32,12 @@ export class API {
 
         const rootInjector = Injector.create(options || { providers: [] });
 
-        for(const pkg of await loadPackageFromFolder(dirPath)) {
+        for (const pkg of await loadPackageFromFolder(dirPath)) {
             const { pkgConfig } = pkg;
             const pkgRouter = new Router();
+            const pkgInjector = Injector.create({ providers: pkgConfig.providers || [], parent: rootInjector });
 
-            for(const srv of pkg.scanServiceFunction(rootInjector)) {
+            for (const srv of pkg.scanServiceFunction(rootInjector)) {
                 const { srvConfig, srvFunction } = srv;
 
                 let path = normalizeRouteName(srvConfig.path ? srvConfig.path : srv.name);
@@ -45,22 +46,32 @@ export class API {
                     path = '/';
                 }
 
-                (srvConfig as ServiceConfigImpl).registerRoute((srvMeth, middlewares) => {
-                    
-                    const mids = middlewares.map((mid) => this.wrapServiceMiddleware(mid, srv.pkgInstance))
+                // 每個 service method 呼叫一次。
+                (<ServiceConfigImpl>srvConfig).registerRoute((srvMethod, middlewares) => {
 
-                    pkgRouter[srvMeth](path, ...[...mids, srvFunction]);
+                    // 設定 package instance 到 service route。
+                    const initServiceRoute: IServiceMiddleware = (ctx, next) => {
+                        ctx.injector = pkgInjector;
+                        ctx.pkgInstance = srv.pkgInstance;
+                        next();
+                    };
+
+                    pkgRouter[srvMethod](path, ...[initServiceRoute, ...middlewares, srvFunction]);
                 });
             }
 
-            const middleware = pkgConfig.middleware ? pkgConfig.middleware: [];
+            const middleware = pkgConfig.middleware ? pkgConfig.middleware : [];
             const middlewares = new Array<any>().concat(middleware) || [];
+            const initPackageRoute: IPackageMiddleware = (ctx, next) => {
+                ctx.injector = pkgInjector;
+                next();
+            }
 
             if (pkgConfig.withoutPath && pkgConfig.withoutPath) {
-                apiRouter.use(...[...middlewares, pkgRouter.routes()]);
+                apiRouter.use(...[initPackageRoute, ...middlewares, pkgRouter.routes()]);
             } else {
                 const path = normalizeRouteName(pkgConfig.path ? pkgConfig.path : pkg.name);
-                apiRouter.use(path, ...[...middlewares, pkgRouter.routes()]);
+                apiRouter.use(path, ...[initPackageRoute, ...middlewares, pkgRouter.routes()]);
             }
         }
 

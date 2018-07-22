@@ -1,9 +1,17 @@
 import Router, { IRouterContext } from 'koa-router';
+import { Injector } from '../di/injector';
+
+interface InjectorContext {
+    /**
+     * 提供全域服務取得。
+     */
+    injector: Injector;
+}
 
 /**
  * 代表 service middleware 參數。
  */
-export interface IServiceContext extends Router.IRouterContext {
+export interface IServiceContext extends Router.IRouterContext, InjectorContext {
     /**
      * Instance of package class。
      */
@@ -13,7 +21,7 @@ export interface IServiceContext extends Router.IRouterContext {
 /**
  * 代表 package middleware 參數。
  */
-export interface IPackageContext extends Router.IRouterContext {
+export interface IPackageContext extends Router.IRouterContext, InjectorContext {
 }
 
 export interface IPackageMiddleware {
