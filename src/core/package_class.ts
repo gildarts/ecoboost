@@ -1,6 +1,7 @@
 import { PackageConfig, Service } from "../reflection";
 import { ServiceFunction } from './service_function';
 import { ServiceMetadataKey } from "../reflection";
+import { Injector } from '../di';
 
 /**
  * 代表 package 類別，可用於輸出 service route。
@@ -25,9 +26,9 @@ export class PackageClass {
     /**
      * 掃描所有可當 service 的 function 資訊。
      */
-    public scanServiceFunction(): ServiceFunction[] {
+    public scanServiceFunction(injector: Injector): ServiceFunction[] {
 
-        const pkgObj = new this.pkgClass();
+        const pkgObj = new this.pkgClass(injector);
         const srvFuncs = [];
 
         for(const key of Object.keys(Object.getPrototypeOf(pkgObj))) {

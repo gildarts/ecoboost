@@ -4,6 +4,7 @@ import Router from 'koa-router';
 import { loadPackageFromFolder, normalizeRouteName } from './utils';
 import { IServiceMiddleware, IServiceContext } from '../reflection';
 import { ServiceConfigImpl } from '../reflection/service_config_impl';
+import { StaticProvider, Injector } from '../di';
 
 export class API {
 
@@ -24,16 +25,18 @@ export class API {
      * 從指定路徑載入 Contract 所有 Package、Service。
      * @param dirPath 路徑。
      */
-    public static async load(dirPath: string): Promise<API> {
+    public static async load(dirPath: string, options?: { providers: StaticProvider[] }): Promise<API> {
 
         const api = new API();
         const apiRouter = api.router;
+
+        const rootInjector = Injector.create(options || { providers: [] });
 
         for(const pkg of await loadPackageFromFolder(dirPath)) {
             const { pkgConfig } = pkg;
             const pkgRouter = new Router();
 
-            for(const srv of pkg.scanServiceFunction()) {
+            for(const srv of pkg.scanServiceFunction(rootInjector)) {
                 const { srvConfig, srvFunction } = srv;
 
                 let path = normalizeRouteName(srvConfig.path ? srvConfig.path : srv.name);
