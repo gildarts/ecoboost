@@ -1,4 +1,5 @@
 import { ServiceMethod, IServiceMiddleware } from "./consts";
+import { IMiddleware } from 'koa-router';
 
 export interface ServiceConfig {
     /** http method，預設為 all => get, post, put, delete。 */

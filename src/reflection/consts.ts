@@ -1,8 +1,28 @@
-import Router from 'koa-router';
+import Router, { IRouterContext } from 'koa-router';
 
-export type IMiddleware = Router.IMiddleware;
+/**
+ * 代表 service middleware 參數。
+ */
+export interface IServiceContext extends Router.IRouterContext {
+    /**
+     * Instance of package class。
+     */
+    pkgInstance: any;
+}
 
-export type IServiceMiddleware = ((ctx: Router.IRouterContext, next: () => Promise<any>, pkgClass: any) => any);
+/**
+ * 代表 package middleware 參數。
+ */
+export interface IPackageContext extends Router.IRouterContext {
+}
+
+export interface IPackageMiddleware {
+    (ctx: IPackageContext, next: () => Promise<any>): any;
+}
+
+export interface IServiceMiddleware {
+    (ctx: IServiceContext, next: () => Promise<any>): any;
+}
 
 /**
  * 代表服務。

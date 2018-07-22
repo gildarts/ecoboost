@@ -1,4 +1,4 @@
-import { IMiddleware } from "./consts";
+import { IPackageMiddleware } from "./consts";
 
 export interface PackageConfig {
     /** 
@@ -15,5 +15,5 @@ export interface PackageConfig {
     /**
      * 中介軟體。
      */
-    middleware?: IMiddleware | IMiddleware[];
+    middleware?: IPackageMiddleware | IPackageMiddleware[];
 }
