@@ -37,7 +37,7 @@ export class API {
             const pkgRouter = new Router();
             const pkgInjector = Injector.create({ providers: pkgConfig.providers || [], parent: rootInjector });
 
-            for (const srv of pkg.scanServiceFunction(rootInjector)) {
+            for (const srv of pkg.scanServiceFunction()) {
                 const { srvConfig, srvFunction } = srv;
 
                 let path = normalizeRouteName(srvConfig.path ? srvConfig.path : srv.name);

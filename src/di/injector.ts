@@ -6,7 +6,7 @@ export abstract class Injector {
 
     static THROW_IF_NOT_FOUND = Symbol('THROW_IF_NOT_FOUND');
 
-    abstract get<T>(token: Type<T> | Symbol, notFoundValue?: T): T;
+    abstract get<T>(token: Type<T> | Symbol | string, notFoundValue?: T): T;
 
     static create(options: {providers: StaticProvider[], parent?: Injector}): Injector {
         const { providers, parent = new NullInjector() } = options;

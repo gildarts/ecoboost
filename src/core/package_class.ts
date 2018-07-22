@@ -26,9 +26,9 @@ export class PackageClass {
     /**
      * 掃描所有可當 service 的 function 資訊。
      */
-    public scanServiceFunction(injector: Injector): ServiceFunction[] {
+    public scanServiceFunction(): ServiceFunction[] {
 
-        const pkgObj = new this.pkgClass(injector);
+        const pkgObj = new this.pkgClass();
         const srvFuncs = [];
 
         for(const key of Object.keys(Object.getPrototypeOf(pkgObj))) {
