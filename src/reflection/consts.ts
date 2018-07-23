@@ -12,10 +12,6 @@ interface InjectorContext {
  * 代表 service middleware 參數。
  */
 export interface IServiceContext extends Router.IRouterContext, InjectorContext {
-    /**
-     * Instance of package class。
-     */
-    pkgInstance: any;
 }
 
 /**
@@ -24,10 +20,16 @@ export interface IServiceContext extends Router.IRouterContext, InjectorContext 
 export interface IPackageContext extends Router.IRouterContext, InjectorContext {
 }
 
+/**
+ * 實作 middleware 時，一定要 return next()，否則會產生「not found」錯誤。
+ */
 export interface IPackageMiddleware {
     (ctx: IPackageContext, next: () => Promise<any>): any;
 }
 
+/**
+ * 實作 middleware 時，一定要 return next()，否則會產生「not found」錯誤。
+ */
 export interface IServiceMiddleware {
     (ctx: IServiceContext, next: () => Promise<any>): any;
 }

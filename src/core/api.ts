@@ -1,8 +1,8 @@
 import Koa from 'koa';
-import Router from 'koa-router';
+import Router, { IMiddleware } from 'koa-router';
 
 import { loadPackageFromFolder, normalizeRouteName } from './utils';
-import { IServiceMiddleware, IServiceContext, IPackageMiddleware } from '../reflection';
+import { IServiceMiddleware, IServiceContext, IPackageMiddleware, IPackageContext } from '../reflection';
 import { ServiceConfigImpl } from '../reflection/service_config_impl';
 import { StaticProvider, Injector } from '../di';
 
@@ -37,7 +37,7 @@ export class API {
             const pkgRouter = new Router();
             const pkgInjector = Injector.create({ providers: pkgConfig.providers || [], parent: rootInjector });
 
-            for (const srv of pkg.scanServiceFunction()) {
+            for (const srv of pkg.scanServiceFunction(pkgInjector)) {
                 const { srvConfig, srvFunction } = srv;
 
                 let path = normalizeRouteName(srvConfig.path ? srvConfig.path : srv.name);
@@ -50,10 +50,9 @@ export class API {
                 (<ServiceConfigImpl>srvConfig).registerRoute((srvMethod, middlewares) => {
 
                     // 設定 package instance 到 service route。
-                    const initServiceRoute: IServiceMiddleware = (ctx, next) => {
+                    const initServiceRoute = (ctx: any, next: any) => {
                         ctx.injector = pkgInjector;
-                        ctx.pkgInstance = srv.pkgInstance;
-                        next();
+                        return next();
                     };
 
                     pkgRouter[srvMethod](path, ...[initServiceRoute, ...middlewares, srvFunction]);
@@ -62,9 +61,9 @@ export class API {
 
             const middleware = pkgConfig.middleware ? pkgConfig.middleware : [];
             const middlewares = new Array<any>().concat(middleware) || [];
-            const initPackageRoute: IPackageMiddleware = (ctx, next) => {
+            const initPackageRoute = (ctx: any, next: any) => {
                 ctx.injector = pkgInjector;
-                next();
+                return next();
             }
 
             if (pkgConfig.withoutPath && pkgConfig.withoutPath) {
@@ -78,10 +77,4 @@ export class API {
         return api;
     }
 
-    private static wrapServiceMiddleware(mid: IServiceMiddleware, pkgInstance: any) {
-        return (ctx: IServiceContext, next: () => Promise<any>) => {
-            ctx.pkgInstance = pkgInstance;
-            return mid(ctx, next);
-        }
-    }
 }
