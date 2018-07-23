@@ -35,6 +35,8 @@ export class PackageClass {
 
             const metadata = Reflect.getMetadata(ServiceMetadataKey, pkgObj, key);
 
+            if(!metadata) continue;
+
             srvFuncs.push(new ServiceFunction(key, pkgObj, pkgObj[key].bind(pkgObj), metadata));
         }
 
