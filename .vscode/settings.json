@@ -1,6 +1,9 @@
 {
     "files.exclude": {
         "*.lock": true,
-        "package-lock.json": true
-    }
+        "package-lock.json": true,
+        "**/*.js": {
+            "when": "$(basename).ts"
+        },
+        "**/*.map": true,    }
 }
