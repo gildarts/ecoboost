@@ -1,4 +1,4 @@
-import { ServiceMethod, IServiceMiddleware } from "./consts";
+import { ServiceMethod, InjectableMiddleware } from "./consts";
 import { IMiddleware } from 'koa-router';
 
 export interface ServiceConfig {
@@ -19,5 +19,5 @@ export interface ServiceConfig {
     /**
      * 中介軟體。
      */
-    middleware?: IServiceMiddleware | IServiceMiddleware[];
+    middleware?: InjectableMiddleware | InjectableMiddleware[];
 }
