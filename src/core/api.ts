@@ -1,8 +1,7 @@
 import Koa from 'koa';
-import Router, { IMiddleware } from 'koa-router';
+import Router from 'koa-router';
 
 import { loadPackageFromFolder, normalizeRouteName } from './utils';
-import { IServiceMiddleware, IServiceContext, IPackageMiddleware, IPackageContext } from '../reflection';
 import { ServiceConfigImpl } from '../reflection/service_config_impl';
 import { StaticProvider, Injector } from '../di';
 

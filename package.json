@@ -3,7 +3,7 @@
   "version": "0.0.9",
   "description": "EcoBoost Architecture",
   "main": "./src/main.js",
-  "typings": "./index.ts",
+  "typings": "./public.d.ts",
   "peerDependencies": {},
   "dependencies": {
     "fs-extra": "^7.0.0",
