@@ -9,6 +9,9 @@ export interface InjectableContext extends Router.IRouterContext {
      * 提供全域服務取得。
      */
     injector: Injector;
+
+    /** 任何東西。 */
+    [x: string]: any;
 }
 
 /**
