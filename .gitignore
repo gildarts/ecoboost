@@ -21,6 +21,7 @@ npm-debug.log
 .DS_Store
 Thumbs.db
 
-**/*.js
-**/*.js.map
+# **/*.js
+# **/*.js.map
+# !./core/webpack.config.js
 .vs

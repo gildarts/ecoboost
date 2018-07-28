@@ -58,6 +58,7 @@
   },
   "include": [
     "src/main.ts",
-    "types.d.ts"
+    "types.d.ts",
+    "public.d.ts"
   ]
 }
