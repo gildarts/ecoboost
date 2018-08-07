@@ -15,9 +15,16 @@ export class API {
 
     /**
      * 以 Koa 格式輸出 Contract 所有路由路徑。
+     * @param path 基礎路徑，不指定即為沒有基礎路徑。
      */
-    public get routes(): Koa.Middleware {
-        return this.router.routes();
+    public routes(path?: string): Koa.Middleware {
+        if (path) {
+            const base = new Router();
+            base.use(path, this.router.routes());
+            return base.routes();
+        } else {
+            return this.router.routes();
+        }
     }
 
     /**
