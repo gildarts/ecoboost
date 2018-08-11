@@ -1,27 +1,34 @@
 {
   "name": "@ecoboost/core",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "description": "EcoBoost Architecture",
   "main": "./src/main.js",
   "typings": "./public.d.ts",
   "peerDependencies": {},
   "dependencies": {
-    "fs-extra": "^7.0.0",
     "koa": "^2.5.2",
     "koa-router": "^7.4.0",
+    "koa-send": "^5.0.0",
+    "koa-static": "^5.0.0",
+    "koa-session": "^5.8.2",
+    "typescript": "^3.0.1",
     "tslib": "^1.9.3",
-    "reflect-metadata": "^0.1.12"
+    "fs-extra": "^7.0.0",
+    "reflect-metadata": "^0.1.12",
+    "@types/node": "^10.5.6",
+    "@types/koa": "^2.0.46",
+    "@types/koa-router": "^7.0.31",
+    "@types/koa-send": "^4.1.1",
+    "@types/koa-static": "^4.0.0",
+    "@types/koa-session": "^5.7.4"
   },
   "devDependencies": {
     "@types/fs-extra": "^5.0.4",
-    "@types/koa": "^2.0.46",
-    "@types/koa-router": "^7.0.30",
     "@types/webpack": "^4.4.5",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.2",
     "ts-loader": "^4.4.2",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
-    "typescript": "^2.9.2",
     "webpack": "^4.15.1",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4",
@@ -30,7 +37,8 @@
   "scripts": {
     "start": "tsc -p tsconfig.dev.json -w",
     "build": "webpack --config webpack.config.js",
-    "devserver": "webpack-dev-server"
+    "devserver": "webpack-dev-server",
+    "deploy": "npm publish --access=public"
   },
   "keywords": [
     "nodejs",
