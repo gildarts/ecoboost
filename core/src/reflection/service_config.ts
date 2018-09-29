@@ -19,5 +19,5 @@ export interface ServiceConfig {
     /**
      * 中介軟體。
      */
-    middleware?: InjectableMiddleware | InjectableMiddleware[];
+    middleware?: InjectableMiddleware | InjectableMiddleware[] | any;
 }
