@@ -1,4 +1,4 @@
-import { ServiceMethod, InjectableMiddleware } from "./consts";
+import { ServiceMethod, Middleware } from "./consts";
 import { ServiceConfig } from "./service_config";
 
 /**
@@ -9,14 +9,14 @@ export class ServiceConfigImpl implements ServiceConfig {
 
     method = ServiceMethod.All;
 
-    middleware: InjectableMiddleware | InjectableMiddleware[] = [];
+    middleware: Middleware | Middleware[] = [];
 
-    public registerRoute(callback: (httpMethod: ServiceMethod, middlewares: InjectableMiddleware[]) => void) {
+    public registerRoute(callback: (httpMethod: ServiceMethod, middlewares: Middleware[]) => void) {
         const method = this.method ? this.method : ServiceMethod.All;
         const middleware = this.middleware ? this.middleware: [];
 
         const methods = new Array<ServiceMethod>().concat(method) || [];
-        const middlewares = new Array<InjectableMiddleware>().concat(middleware) || [];
+        const middlewares = new Array<Middleware>().concat(middleware) || [];
 
         for(const m of methods) {
             callback(m, middlewares);

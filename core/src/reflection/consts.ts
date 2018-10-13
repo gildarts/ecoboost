@@ -1,24 +1,21 @@
-import Router from 'koa-router';
 import { Injector } from '../di/injector';
+import { Context } from 'koa';
 
-/**
- * 提供 Injector 的 Context。
- */
-export interface InjectableContext extends Router.IRouterContext {
-    /**
-     * 提供全域服務取得。
-     */
-    injector: Injector;
+declare module 'koa' {
 
-    /** 任何東西。 */
-    [x: string]: any;
+    interface Context {
+        /**
+         * 提供全域服務取得。
+         */
+        injector: Injector
+    }
 }
 
 /**
  * 實作 middleware 時，一定要 return next()，否則會產生「not found」錯誤。
  */
-export interface InjectableMiddleware {
-    (ctx: InjectableContext, next: () => Promise<any>): any;
+export interface Middleware {
+    (ctx: Context, next: () => Promise<any>): any;
 }
 
 /**

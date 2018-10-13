@@ -1,4 +1,4 @@
-import { InjectableMiddleware } from "./consts";
+import { Middleware} from "./consts";
 import { StaticProvider } from '../di/provider';
 
 export interface PackageConfig {
@@ -16,7 +16,7 @@ export interface PackageConfig {
     /**
      * 中介軟體。
      */
-    middleware?: InjectableMiddleware | InjectableMiddleware[];
+    middleware?: Middleware | Middleware[];
 
     /**
      * package 層級的 provider。
