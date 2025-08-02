@@ -1,10 +1,9 @@
 {
   "name": "@ecoboost/core",
-  "version": "0.3.3",
+  "version": "0.3.5",
   "description": "EcoBoost Architecture",
   "main": "./src/main.js",
   "typings": "./public.d.ts",
-  "peerDependencies": {},
   "dependencies": {
     "@types/koa": "^2.0.46",
     "@types/koa-router": "^7.0.31",

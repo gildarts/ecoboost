@@ -39,7 +39,7 @@ export class API {
         const api = new API();
         const apiRouter = api.router;
 
-        if(options?.middleware) {
+        if(options && options.middleware) {
             apiRouter.use(...options.middleware);
         }
 

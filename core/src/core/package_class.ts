@@ -31,7 +31,10 @@ export class PackageClass {
         const pkgObj = new this.pkgClass(injector);
         const srvFuncs = [];
 
-        for(const key of Object.keys(Object.getPrototypeOf(pkgObj))) {
+        // 使用通用方法掃描，支援 ES5 到 ES2020+ 的所有編譯目標
+        const methodNames = this.getAllMethodNames(pkgObj);
+
+        for(const key of methodNames) {
 
             const metadata = Reflect.getMetadata(ServiceMetadataKey, pkgObj, key);
 
@@ -41,5 +44,28 @@ export class PackageClass {
         }
 
         return srvFuncs;
+    }
+
+    /**
+     * 通用方法掃描邏輯，支援所有 TypeScript 編譯目標。
+     * 從物件本身開始，遞歸掃描整個原型鏈以找出所有方法。
+     */
+    private getAllMethodNames(obj: any): string[] {
+        const methods = new Set<string>();
+        
+        // 從物件本身開始，遞歸掃描原型鏈
+        let current = obj;
+        while (current && current !== Object.prototype) {
+            Object.getOwnPropertyNames(current).forEach(key => {
+                if (typeof current[key] === 'function' && 
+                    key !== 'constructor' && 
+                    !key.startsWith('_')) { // 排除私有方法
+                    methods.add(key);
+                }
+            });
+            current = Object.getPrototypeOf(current);
+        }
+        
+        return Array.from(methods);
     }
 }
